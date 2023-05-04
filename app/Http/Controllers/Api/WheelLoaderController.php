@@ -46,8 +46,7 @@ class WheelLoaderController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
-            'role' => 'required',
-            'password' => 'required|string'
+            'role' => 'required'
             
         ]);
 
