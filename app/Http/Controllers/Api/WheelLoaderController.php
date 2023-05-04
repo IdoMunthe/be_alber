@@ -45,8 +45,12 @@ class WheelLoaderController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string',
-            'role' => 'required'
+            "no_order" => "required|string",
+            "pekerjaan" => "required",
+            "kapal" => "required|string",
+            "no_palka" => "required|string",
+            "kegiatan" => "required",
+            "area" => "required"
             
         ]);
 
@@ -57,15 +61,18 @@ class WheelLoaderController extends Controller
             ], 400);
         }
 
-        $users = new User();
-        $users->name = $request->name;
-        $users->role = $request->role;
-        $users->password = bcrypt($request->password);
-        $users->save();
+        $wheelloader = new WheelLoader();
+        $wheelloader->no_order = $request->no_order;
+        $wheelloader->pekerjaan = $request->pekerjaan;
+        $wheelloader->kapal = $request->kapal;
+        $wheelloader->no_palka = $request->no_palka;
+        $wheelloader->kegiatan = $request->kegiatan;
+        $wheelloader->area = $request->area;
+        $wheelloader->save();
 
         return response()->json([
             'status' => 'berhasil',
-            'data' => $users
+            'data' => $wheelloader
         ], 200);
     }
 
