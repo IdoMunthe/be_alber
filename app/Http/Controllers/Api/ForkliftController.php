@@ -49,8 +49,9 @@ class ForkliftController extends Controller
             "pekerjaan" => "required",
             "kapal" => "required|string",
             "no_palka" => "required|string",
-            "kegiatan" => "required",
-            "area" => "required"
+            "area" => "required",
+            'time_start' => 'date_format:H:i',
+            'time_end' => 'date_format:H:i|after:time_start'
             
         ]);
 
@@ -68,6 +69,8 @@ class ForkliftController extends Controller
         $forklift->no_palka = $request->no_palka;
         $forklift->kegiatan = $request->kegiatan;
         $forklift->area = $request->area;
+        $forklift->time_start = $request->time_start;
+        $forklift->time_end = $request->time_end;
         $forklift->save();
 
         return response()->json([

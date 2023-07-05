@@ -50,8 +50,9 @@ class WheelLoaderController extends Controller
             "kapal" => "required|string",
             "no_palka" => "required|string",
             "kegiatan" => "required",
-            "area" => "required"
-            
+            "area" => "required",
+            'time_start' => 'date_format:H:i',
+            'time_end' => 'date_format:H:i|after:time_start'
         ]);
 
         if ($validator->fails()) {
@@ -68,6 +69,8 @@ class WheelLoaderController extends Controller
         $wheelloader->no_palka = $request->no_palka;
         $wheelloader->kegiatan = $request->kegiatan;
         $wheelloader->area = $request->area;
+        $wheelloader->time_start = $request->time_start;
+        $wheelloader->time_end = $request->time_end;
         $wheelloader->save();
 
         return response()->json([

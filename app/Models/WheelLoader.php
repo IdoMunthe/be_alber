@@ -15,6 +15,8 @@ class WheelLoader extends Model
         'kapal',
         'no_palka',
         'kegiatan',
-        'area'
+        'area',
+        'time_start',
+        'time_end'
     ];
 }

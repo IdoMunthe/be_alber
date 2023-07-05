@@ -49,8 +49,9 @@ class ExcavatorController extends Controller
             'pekerjaan' => 'required',
             'kapal' => 'required',
             'no_palka' => 'required|string',
-            'kegiatan' => 'required',
-            'area' => 'required'
+            'area' => 'required',
+            'time_start' => 'date_format:H:i',
+            'time_end' => 'date_format:H:i|after:time_start'
             
         ]);
 
@@ -68,6 +69,8 @@ class ExcavatorController extends Controller
         $excavator->no_palka = $request->no_palka;
         $excavator->kegiatan = $request->kegiatan;
         $excavator->area = $request->area;
+        $excavator->time_start = $request->time_start;
+        $excavator->time_end = $request->time_end;
         $excavator->save();
 
         return response()->json([

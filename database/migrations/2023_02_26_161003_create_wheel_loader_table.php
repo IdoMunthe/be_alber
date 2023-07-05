@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('no_palka');
             $table->string('kegiatan');
             $table->string('area');
+            $table->time('time_start');
+            $table->time('time_end');
             $table->timestamps();
         });
     }
