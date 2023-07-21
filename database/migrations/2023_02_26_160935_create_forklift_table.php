@@ -17,12 +17,12 @@ return new class extends Migration
             $table->id();
             $table->string('no_order');
             $table->string('pekerjaan');
-            $table->string('kapal');
-            $table->string('no_palka');
+            $table->string('kapal')->nullable();
+            $table->string('no_palka')->nullable();
             $table->string('kegiatan')->nullable();
-            $table->string('area');
-            $table->time('time_start');
-            $table->time('time_end');
+            $table->string('area')->nullable();
+            $table->time('time_start')->nullable();
+            $table->time('time_end')->nullable();
             $table->timestamps();
         });
     }

@@ -49,8 +49,6 @@ class WheelLoaderController extends Controller
             "pekerjaan" => "required",
             "kapal" => "required|string",
             "no_palka" => "required|string",
-            "kegiatan" => "required",
-            "area" => "required",
             'time_start' => 'date_format:H:i',
             'time_end' => 'date_format:H:i|after:time_start'
         ]);
