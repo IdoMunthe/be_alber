@@ -17,6 +17,7 @@ class Excavator extends Model
         'kegiatan',
         'area',
         'time_start',
-        'time_end'
+        'time_end',
+        'status'
     ];
 }

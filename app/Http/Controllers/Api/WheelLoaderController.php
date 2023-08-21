@@ -51,6 +51,7 @@ class WheelLoaderController extends Controller
             "no_palka" => "required|string",
             'time_start' => 'date_format:H:i',
             'time_end' => 'date_format:H:i|after:time_start'
+        
         ]);
 
         if ($validator->fails()) {

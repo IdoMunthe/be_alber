@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ForkliftController;
 use App\Http\Controllers\Api\ExcavatorController;
 use App\Http\Controllers\Api\WheelLoaderController;
+use App\Http\Controllers\StatusController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,3 +36,5 @@ Route::post('/excavator', [ExcavatorController::class, 'store']);
 
 Route::get('/wheelLoader', [WheelLoaderController::class, 'index']);
 Route::post('/wheelLoader', [WheelLoaderController::class, 'store']);
+
+Route::put('/status', [StatusController::class, 'status']);
