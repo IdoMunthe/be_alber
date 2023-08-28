@@ -19,6 +19,7 @@ class Forklift extends Model
         'area',
         'time_start',
         'time_end',
-        'status'
+        'status',
+        'Approved_time'
     ];
 }

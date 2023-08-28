@@ -47,10 +47,10 @@ class WheelLoaderController extends Controller
         $validator = Validator::make($request->all(), [
             "no_order" => "required|string",
             "pekerjaan" => "required",
-            "kapal" => "required|string",
-            "no_palka" => "required|string",
-            'time_start' => 'date_format:H:i',
-            'time_end' => 'date_format:H:i|after:time_start'
+            "kapal" => "string",
+            "no_palka" => "string",
+            // 'time_start' => 'date_format:H:i',
+            // 'time_end' => 'date_format:H:i|after:time_start'
         
         ]);
 
