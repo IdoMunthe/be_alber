@@ -5,12 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WheelLoader extends Model
+class Alber extends Model
 {
     use HasFactory;
-    
-    public $table = 'wheel_loader';
     protected $fillable = [
+        'jenis_alber',
         'no_order',
         'pekerjaan',
         'kapal',
@@ -20,6 +19,8 @@ class WheelLoader extends Model
         'time_start',
         'time_end',
         'status',
-        'Approved_time'
+        'status_time',
+        'no_lambung',
+        'operator'
     ];
 }

@@ -45,13 +45,14 @@ class ExcavatorController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'no_order' => 'required|string',
-            'pekerjaan' => 'string',
-            // 'kapal' => 'string',
-            // 'no_palka' => 'string',
-            // 'area' => 'string',
-            // 'time_start' => 'date_format:H:i',
-            // 'time_end' => 'date_format:H:i|after:time_start'
+            "no_order" => "required|string",
+            "pekerjaan" => "required|string",
+            "kapal" => "nullable|string",
+            "no_palka" => "nullable|numeric",
+            'kegiatan' => "nullable|string",
+            'area' => "nullable|string",
+            'time_start' => 'date_format:H:i',
+            'time_end' => 'date_format:H:i|after:time_start'
             
         ]);
 

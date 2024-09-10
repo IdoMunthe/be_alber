@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\AlberController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ForkliftController;
 use App\Http\Controllers\Api\ExcavatorController;
@@ -25,16 +26,53 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // user
 Route::get('/users', [UserController::class, 'index']);
-Route::post('/register', [UserController::class, 'store']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/register', [UserController::class, 'register']);
+Route::post('/login', [UserController::class, 'login'])->name('login');
 
-Route::get('/forklift', [ForkliftController::class, 'index']);
-Route::post('/forklift', [ForkliftController::class, 'store']);
+//SUBMISSION TRACKING
+// status update
+Route::middleware('auth:sanctum')->group(function () {
+    //log out
+    Route::post('/logout', [UserController::class, 'logout'])->name('logout');
+
+    // updating status of each heavy equipment
+    Route::put('/history-order', [StatusController::class, 'historyOrder']);
+
+    // New Requset Feature || united alber in database (scroll below to compare)
+    Route::post('/request-alber', [AlberController::class, 'requestAlber']);
+
+    // To auto-increment no. order
+    Route::get('/next-order/{jenis_alber}', [AlberController::class, 'getNextOrder']);
+
+    // Admin_pcs 'Manage Alber'
+    Route::put('/manage-alber', [AlberController::class, 'manageAlber']);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// New Requset Feature || per alber
+Route::get('/wheelLoader', [WheelLoaderController::class, 'index']);
+Route::post('/wheelLoader', [WheelLoaderController::class, 'store']);
 
 Route::get('/excavator', [ExcavatorController::class, 'index']);
 Route::post('/excavator', [ExcavatorController::class, 'store']);
 
-Route::get('/wheelLoader', [WheelLoaderController::class, 'index']);
-Route::post('/wheelLoader', [WheelLoaderController::class, 'store']);
-
-Route::put('/status', [StatusController::class, 'status']);
+Route::get('/forklift', [ForkliftController::class, 'index']);
+Route::post('/forklift', [ForkliftController::class, 'store']);

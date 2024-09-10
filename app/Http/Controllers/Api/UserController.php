@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
         $users = User::all();
@@ -25,29 +20,19 @@ class UserController extends Controller
         ], 200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required|string',
             'role' => 'required',
             'password' => 'required|string'
         ]);
+
+        if (User::where('name', $request->name)->exists()) {
+            return response()->json([
+                'message' => 'username is already taken'
+            ], 400);
+        }
 
         if ($validator->fails()) {
             return response()->json([
@@ -68,64 +53,33 @@ class UserController extends Controller
         ], 200);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function login(Request $request)
     {
         if (!Auth::attempt($request->only('name', 'password'))) {
-            return response()->json(['success' => false, 'message' => 'Unauthorized'], 401);
+            return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
         }
-    
+
         $user = User::where('name', $request->name)->firstOrFail();
 
         $token = $user->createToken('auth_token')->plainTextToken;
-    
-        return response()->json(['success' => true, 'message' => 'Berhasil',
-         'data' => $user,'access_token' => $token, 'role' => $user->role, 'name' => $user->name]);
-    }
-    
 
+        return response()->json([
+            'message' => 'berhasil log in',
+            // 'data' => $user,
+            'role' => $user->role,
+            'name' => $user->name,
+            'token' => $token,
+        ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $user = $request->user();
+        $user->tokens()->delete();
+
+        return response()->json([
+            "message" => "{$user->name} successfully logged out",
+
+        ]);
+    }
 }
