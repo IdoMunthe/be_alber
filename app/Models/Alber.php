@@ -21,6 +21,7 @@ class Alber extends Model
         'status',
         'status_time',
         'no_lambung',
-        'operator'
+        'operator',
+        'requested_by'
     ];
 }

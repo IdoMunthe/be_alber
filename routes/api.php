@@ -46,6 +46,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin_pcs 'Manage Alber'
     Route::put('/manage-alber', [AlberController::class, 'manageAlber']);
+
+    // Getting Alber
+    Route::get('/user-albers', [AlberController::class, 'getAlberForUser']);
+
+    // Getting Specific Alber
+    Route::get('alber/{id}', [AlberController::class, 'getAlberById']);
 });
 
 

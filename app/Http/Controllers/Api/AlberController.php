@@ -4,7 +4,9 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Alber;
+use App\Models\Status;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -44,9 +46,9 @@ class AlberController extends Controller
 
             // Define the template for each jenis_alber
             $prefixes = [
-                'wheel-loader' => 'PO-WD-',
-                'xxcavator' => 'PO-EX-',
-                'forklift' => 'PO-FO-',
+                'Wheel Loader' => 'PO-WD-',
+                'Excavator' => 'PO-EX-',
+                'Forklift' => 'PO-FO-',
             ];
 
             // Find the current count of albers with the same jenis_alber
@@ -71,7 +73,10 @@ class AlberController extends Controller
             $alber->operator = $request->operator;
             $alber->time_start = $request->time_start;
             $alber->time_end = $request->time_end;
+            $alber->requested_by = auth()->user()->name;
             $alber->save();
+
+            // dd($request->all()); // Dump and die to inspect the request data
 
             $current_timestamp = Carbon::now()->toDateTimeString();
 
@@ -92,11 +97,13 @@ class AlberController extends Controller
                 'data' => $alber
             ]);
 
+
             // DB::table('albers')->truncate();
-        } catch (ValidationException $e) {
+        } catch (\Exception $e) {
+            // Debug: Output exception message
             return response()->json([
-                'errors' => $e->errors()
-            ], 422);
+                'error' => $e->getMessage()
+            ], 500);
         }
     }
 
@@ -124,9 +131,9 @@ class AlberController extends Controller
     {
         // Define the template for each jenis_alber
         $prefixes = [
-            'wheel-loader' => 'PO-WD-',
-            'excavator' => 'PO-EX-',
-            'forklift' => 'PO-FO-',
+            'Wheel Loader' => 'PO-WD-',
+            'Excavator' => 'PO-EX-',
+            'Forklift' => 'PO-FO-',
         ];
 
         // Validate that jenis_alber exists in prefixes
@@ -157,5 +164,31 @@ class AlberController extends Controller
         ]);
     }
 
+    public function getAlberForUser(Request $request)
+    {
+        $username = $request->user()->name;
+        $alber = Alber::where('requested_by', $username)->get();
+        return response()->json(['message' => 'data successfully fetched', 'data' => $alber]);
+    }
 
+    public function getAlberById($id)
+    {
+        try {
+            $statuses = DB::table('statuses')->where('alber_id', $id)->get();
+
+            if ($statuses->isEmpty()) {
+                return response()->json([
+                    'message' => 'No status found for this Alber'
+                ], 404);
+            }
+
+            return response()->json([
+                'data' => $statuses,
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

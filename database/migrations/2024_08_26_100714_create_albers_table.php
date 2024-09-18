@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('area')->nullable();
             $table->time('time_start')->nullable();
             $table->time('time_end')->nullable();
+            $table->string('requested_by');
             $table->string('status')->nullable();
             $table->timestamp('status_time')->nullable();
             $table->integer('no_lambung')->nullable();
