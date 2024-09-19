@@ -79,4 +79,5 @@ class StatusController extends Controller
             'pic_role' => auth()->user()->role
         ]);
     }
+    
 }

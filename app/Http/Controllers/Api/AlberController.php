@@ -166,6 +166,13 @@ class AlberController extends Controller
 
     public function getAlberForUser(Request $request)
     {
+        $role = $request->user()->role;
+
+        if ($role === 'admin') {
+            $alber = Alber::all();
+            return response()->json(['message' => 'data successfully fethec for ADMIN', 'data' => $alber]);
+        }
+
         $username = $request->user()->name;
         $alber = Alber::where('requested_by', $username)->get();
         return response()->json(['message' => 'data successfully fetched', 'data' => $alber]);
