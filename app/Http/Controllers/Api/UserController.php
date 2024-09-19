@@ -72,6 +72,16 @@ class UserController extends Controller
         ]);
     }
 
+    public function getUserInfo()
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            'name' => $user->name,
+            'role' => $user->role
+        ]);
+    }
+
     public function logout(Request $request)
     {
         $user = $request->user();

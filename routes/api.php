@@ -51,7 +51,26 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-albers', [AlberController::class, 'getAlberForUser']);
 
     // Getting Specific Alber
-    Route::get('alber/{id}', [AlberController::class, 'getAlberById']);
+    Route::get('/alber/{id}', [AlberController::class, 'getAlberById']);
+
+    Route::get('/user-info', [UserController::class, 'getUserInfo']);
+});
+
+Route::get('/check-extensions', function () {
+    $extensions = [
+        'pdo_mysql',
+        'mbstring',
+        'openssl',
+        'xml',
+        'ctype',
+        'fileinfo',
+    ];
+
+    $missing = array_filter($extensions, function ($ext) {
+        return !extension_loaded($ext);
+    });
+
+    return count($missing) > 0 ? $missing : 'All required PHP extensions are installed';
 });
 
 
