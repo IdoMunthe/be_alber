@@ -77,7 +77,7 @@ class AlberController extends Controller
             $alber->save();
 
             // dd($request->all()); // Dump and die to inspect the request data
-
+            
             $current_timestamp = Carbon::now()->toDateTimeString();
 
             DB::table('statuses')->insert([
