@@ -76,8 +76,8 @@ class UserController extends Controller
                 'token' => $token,
             ]);
         } catch (\Exception $e) {
-            Log::error('Login Error: ' . $e->getMessage());  // Log the error
-            return response()->json(['error' => 'Something went wrong during login.'], 500);
+            $message = Log::error('Login Error: ' . $e->getMessage());  // Log the error
+            return response()->json(['error' => $message], 500);
         }
     }
 
