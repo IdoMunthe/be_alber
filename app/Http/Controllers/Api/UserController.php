@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 class UserController extends Controller
 {
@@ -55,22 +57,30 @@ class UserController extends Controller
 
     public function login(Request $request)
     {
-        if (!Auth::attempt($request->only('name', 'password'))) {
-            return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
+        try {
+            // Check credentials
+            if (!Auth::attempt($request->only('name', 'password'))) {
+                return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
+            }
+
+            // Get user
+            $user = User::where('name', $request->name)->firstOrFail();
+
+            // Create token
+            $token = $user->createToken('auth_token')->plainTextToken;
+
+            return response()->json([
+                'message' => 'berhasil log in',
+                'role' => $user->role,
+                'name' => $user->name,
+                'token' => $token,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Login Error: ' . $e->getMessage());  // Log the error
+            return response()->json(['error' => 'Something went wrong during login.'], 500);
         }
-
-        $user = User::where('name', $request->name)->firstOrFail();
-
-        $token = $user->createToken('auth_token')->plainTextToken;
-
-        return response()->json([
-            'message' => 'berhasil log in',
-            // 'data' => $user,
-            'role' => $user->role,
-            'name' => $user->name,
-            'token' => $token,
-        ]);
     }
+
 
     public function getUserInfo()
     {
