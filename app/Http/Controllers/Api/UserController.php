@@ -58,6 +58,9 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
+            // Dump the request data and stop execution
+            dd($request->all());
+
             // Check credentials
             if (!Auth::attempt($request->only('name', 'password'))) {
                 return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
@@ -76,10 +79,11 @@ class UserController extends Controller
                 'token' => $token,
             ]);
         } catch (\Exception $e) {
-            $message = Log::error('Login Error: ' . $e->getMessage());  // Log the error
-            return response()->json(['error' => $message], 500);
+            Log::error('Login Error: ' . $e->getMessage());  // Log the error
+            return response()->json(['error' => 'Something went wrong during login.'], 500);
         }
     }
+
 
 
     public function getUserInfo()
