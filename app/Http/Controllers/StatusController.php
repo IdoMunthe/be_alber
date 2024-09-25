@@ -18,7 +18,7 @@ class StatusController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $action = $request->action; // Action from the frontend (e.g 'submit_new_request')
+        $action = $request->action;
         $alberId = $request->id; // WE NEED TO LOOK AT THIS, THERE IS A POSSIBLE ERROR IN THE FUTURE
 
         $current_timestamp = Carbon::now()->toDateTimeString();
