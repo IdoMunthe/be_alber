@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 
 
@@ -58,9 +59,6 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
-            // Dump the request data and stop execution
-            dd($request->all());
-
             // Check credentials
             if (!Auth::attempt($request->only('name', 'password'))) {
                 return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
@@ -106,4 +104,28 @@ class UserController extends Controller
 
         ]);
     }
+
+    public function checkPassword(Request $request)
+    {
+        // Validate the incoming request
+        $request->validate([
+            'name' => 'required|string',
+            'password' => 'required|string',
+        ]);
+
+        // Retrieve the user
+        $user = User::where('name', $request->name)->first();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'User not found!'], 404);
+        }
+
+        // Check if the password matches
+        if (Hash::check($request->password, $user->password)) {
+            return response()->json(['success' => true, 'message' => 'Password matches!'], 200);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Password does not match!'], 401);
+        }
+    }
+
 }
