@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AlberVisualizationController;
 use App\Http\Controllers\api\AlberController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ForkliftController;
@@ -54,26 +55,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/alber/{id}', [AlberController::class, 'getAlberById']);
 
     Route::get('/user-info', [UserController::class, 'getUserInfo']);
+
 });
+// Route to get all visualizations
+Route::get('/alber-visualizations', [AlberVisualizationController::class, 'index']);
 
-// Route::get('/check-extensions', function () {
-//     $extensions = [
-//         'pdo_mysql',
-//         'mbstring',
-//         'openssl',
-//         'xml',
-//         'ctype',
-//         'fileinfo',
-//     ];
-
-//     $missing = array_filter($extensions, function ($ext) {
-//         return !extension_loaded($ext);
-//     });
-
-//     return count($missing) > 0 ? $missing : 'All required PHP extensions are installed';
-// });
-
-
+// Route to update the color of a specific alber_id
+Route::put('/alber-visualizations/{id}', [AlberVisualizationController::class, 'update']);
 
 
 
@@ -93,11 +81,11 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
 // New Requset Feature || per alber
-Route::get('/wheelLoader', [WheelLoaderController::class, 'index']);
-Route::post('/wheelLoader', [WheelLoaderController::class, 'store']);
+// Route::get('/wheelLoader', [WheelLoaderController::class, 'index']);
+// Route::post('/wheelLoader', [WheelLoaderController::class, 'store']);
 
-Route::get('/excavator', [ExcavatorController::class, 'index']);
-Route::post('/excavator', [ExcavatorController::class, 'store']);
+// Route::get('/excavator', [ExcavatorController::class, 'index']);
+// Route::post('/excavator', [ExcavatorController::class, 'store']);
 
-Route::get('/forklift', [ForkliftController::class, 'index']);
-Route::post('/forklift', [ForkliftController::class, 'store']);
+// Route::get('/forklift', [ForkliftController::class, 'index']);
+// Route::post('/forklift', [ForkliftController::class, 'store']);
