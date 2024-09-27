@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -59,13 +59,27 @@ class UserController extends Controller
     public function login(Request $request)
     {
         try {
-            // Check credentials
-            if (!Auth::attempt($request->only('name', 'password'))) {
-                return response()->json(['success' => false, 'message' => 'Login failed! Check your credentials!'], 401);
+            $request->validate([
+                "name" => "required|string",
+                "password" => "required|string"
+            ]);
+
+            $user = User::where('name', $request->name)->first();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "User {$request->name} tidak ada"
+                ]);
             }
 
-            // Get user
-            $user = User::where('name', $request->name)->firstOrFail();
+            // Check credentials
+            if (!Auth::attempt($request->only('name', 'password'))) {
+                return response()->json(['success' => false, 'message' => 'Password salah!'], 401);
+            }
+
+            // // Get user
+            // $user = User::where('name', $request->name)->firstOrFail();
 
             // Create token
             $token = $user->createToken('auth_token')->plainTextToken;
@@ -76,7 +90,10 @@ class UserController extends Controller
                 'name' => $user->name,
                 'token' => $token,
             ]);
-        } catch (\Exception $e) {
+        } catch (ValidationException $e) {
+            // Handle validation exceptions separately
+            return response()->json(['success' => false, 'message' => $e->validator->errors()->first()], 422);} 
+        catch (\Exception $e) {
             Log::error('Login Error: ' . $e->getMessage());  // Log the error
             return response()->json(['error' => 'Something went wrong during login.'], 500);
         }
