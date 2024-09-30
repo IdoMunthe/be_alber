@@ -105,4 +105,23 @@ class StatusController extends Controller
         ]);
     }
 
+    public function getFinishedAlbers()
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Retrieve all albers with the status 'Stop Working'
+        $finishedAlbers = Alber::where('status', 'Stop Working')->get();
+
+        if ($finishedAlbers->isEmpty()) {
+            return response()->json(['message' => 'No finished albers found'], 404);
+        }
+
+        // Return the finished albers
+        return response()->json($finishedAlbers);
+    }
+
+
+
 }

@@ -64,6 +64,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // get alber status by id
     Route::get('/alber-status/{id}', [StatusController::class, 'getAlberStatusById']);
+
+    // get alber that are already finished
+    Route::get('/alber-finished', [StatusController::class, 'getFinishedAlbers']);
 });
 
 
