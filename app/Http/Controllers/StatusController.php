@@ -79,5 +79,30 @@ class StatusController extends Controller
             'pic_role' => auth()->user()->role
         ]);
     }
-    
+
+    public function getAlberStatusById($alberId)
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        // Fetch the latest status of the specific alber using the alberId
+        $status = DB::table('statuses')
+        ->where('alber_id', $alberId)
+            ->orderBy('status_time', 'desc')
+            ->first(); // Get the most recent record
+
+        // If no status found, return an appropriate message
+        if (!$status) {
+            return response()->json(['error' => 'No status found for this alber'], 404);
+        }
+
+        return response()->json([
+            'alber_id' => $alberId,
+            'status' => $status->status,
+            'status_time' => $status->status_time,
+            'pic' => $status->pic
+        ]);
+    }
+
 }

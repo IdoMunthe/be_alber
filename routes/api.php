@@ -61,6 +61,9 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Route to update the color of a specific alber_id
     Route::put('/alber-visualizations/{id}', [AlberVisualizationController::class, 'update']);
+
+    // get alber status by id
+    Route::get('/alber-status/{id}', [StatusController::class, 'getAlberStatusById']);
 });
 
 
