@@ -115,7 +115,7 @@ class StatusController extends Controller
         $finishedAlbers = Alber::where('status', 'Stop Working')->get();
 
         if ($finishedAlbers->isEmpty()) {
-            return response()->json(['message' => 'No finished albers found'], 404);
+            return response()->json(['message' => 'No finished albers found']);
         }
 
         // Return the finished albers
