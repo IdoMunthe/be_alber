@@ -175,6 +175,11 @@ class AlberController extends Controller
 
         $username = $request->user()->name;
         $alber = Alber::where('requested_by', $username)->get();
+
+        if($alber->isEmpty()) {
+            return response()->json(['message' => 'No Alber found for this user'], 404);
+        }
+
         return response()->json(['message' => 'data successfully fetched', 'data' => $alber]);
     }
 
