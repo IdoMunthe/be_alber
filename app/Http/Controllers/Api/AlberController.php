@@ -170,7 +170,7 @@ class AlberController extends Controller
 
         if ($role === 'admin') {
             $alber = Alber::all();
-            return response()->json(['message' => 'data successfully fethec for ADMIN', 'data' => $alber]);
+            return response()->json(['message' => 'data successfully fetched for ADMIN', 'data' => $alber]);
         }
 
         $username = $request->user()->name;
