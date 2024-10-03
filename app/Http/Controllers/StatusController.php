@@ -122,6 +122,4 @@ class StatusController extends Controller
         return response()->json($finishedAlbers);
     }
 
-
-
 }

@@ -77,7 +77,7 @@ class AlberController extends Controller
             $alber->save();
 
             // dd($request->all()); // Dump and die to inspect the request data
-            
+
             $current_timestamp = Carbon::now()->toDateTimeString();
 
             DB::table('statuses')->insert([
@@ -173,10 +173,15 @@ class AlberController extends Controller
             return response()->json(['message' => 'data successfully fetched for ADMIN', 'data' => $alber]);
         }
 
+        if ($role === 'admin_pcs') {
+            $alber = Alber::all();
+            return response()->json(['message' => 'data successfully fetched for admin_pcs', 'data' => $alber]);
+        }
+
         $username = $request->user()->name;
         $alber = Alber::where('requested_by', $username)->get();
 
-        if($alber->isEmpty()) {
+        if ($alber->isEmpty()) {
             return response()->json(['message' => 'No Alber found for this user'], 404);
         }
 
