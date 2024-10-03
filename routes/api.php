@@ -67,6 +67,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // get alber that are already finished
     Route::get('/alber-finished', [StatusController::class, 'getFinishedAlbers']);
+
+    // to add no_lambung and operator
+    Route::put('/nomor-lambung-dan-operator/{id}', [AlberController::class, 'addNomorLambungAndNamaOperator']);
+
+    // to get no_lambung and operator of certain alber
+    Route::get('/nomor-lambung-dan-operator/{id}', [AlberController::class, 'getNomorLambungAndNamaOperator']);
 });
 
 

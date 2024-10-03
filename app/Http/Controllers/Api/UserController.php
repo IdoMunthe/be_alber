@@ -69,7 +69,7 @@ class UserController extends Controller
             if (!$user) {
                 return response()->json([
                     'success' => false,
-                    'message' => "User {$request->name} tidak ada"
+                    'message' => "User {$request->name} belum terdaftar dalam database"
                 ]);
             }
 

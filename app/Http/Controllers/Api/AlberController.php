@@ -208,4 +208,53 @@ class AlberController extends Controller
             ], 500);
         }
     }
+
+    public function addNomorLambungAndNamaOperator(Request $request, $id)
+    {
+        try {
+            // Validate the incoming data
+            $request->validate([
+                'no_lambung' => 'required|numeric',
+                'operator' => 'required|string',
+            ]);
+
+            // Find the Alber by ID
+            $alber = Alber::findOrFail($id); // Find or fail will automatically throw 404 if not found
+
+            // Update the fields
+            $alber->no_lambung = $request->no_lambung;
+            $alber->operator = $request->operator;
+
+            // Save the changes
+            $alber->save();
+
+            // Return a success response
+            return response()->json([
+                'message' => 'Alber updated successfully!',
+                'no_lambung' => $alber->no_lambung,
+                'operator' => $alber->operator
+            ], 200);
+        } catch (ValidationException $e) {
+            return response()->json([
+                'errors' => $e->errors()
+            ], 422);
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function getNomorLambungAndNamaOperator($id)
+    {
+        if (!auth()->check()) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $data = Alber::select(['no_lambung', 'operator'])->findOrFail($id);
+
+        return response()->json([
+            'data' => $data
+        ]);
+    }
 }
